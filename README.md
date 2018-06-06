@@ -57,18 +57,18 @@ class Person implements Rank {
 	String PW;	 // 기본은 id 뒷자리4개 수정시 4~8자리
 	String joinDay; // 입사일
 	String OutDay = "b"; // a 자퇴 b 재학 c 졸업 d 퇴직
+	// static int numOfPerson=0;
 
-    
-	public Person(String personalNum, String phoneNumber, String officeNumber, String email, String name,
-			String department) {
+	public Person(String personalNum, String phoneNumber, String email, String name, String department) {
 		this.ID = personalNum;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.name = name;
 		this.department = department;
-        this.PW = personalNum.substring(personalNum.length()-4);
+		this.PW = personalNum.substring(personalNum.length()-4);
+	    this.joinDay = personalNum.substring(0, 4) + ".3.2";
 	}
-    	//패스워드 입력 생성자 ,   파일 로딩시 or 메뉴실행중 학생 추가시
+	//패스워드 입력 생성자 ,   파일 로딩시 or 메뉴실행중 학생 추가시
 	public Person(String personalNum, String phoneNumber, String email, String name, String department, String pw) {
 		this.ID = personalNum;
 		this.phoneNumber = phoneNumber;
@@ -76,6 +76,8 @@ class Person implements Rank {
 		this.name = name;
 		this.department = department;
 		this.PW = pw;
+		java.util.Random r1 = new java.util.Random();
+	    this.joinDay = personalNum.substring(0, 4) + "."+(r1.nextInt(12)+1)+"."+(r1.nextInt(28)+1);
 	}
 }
 
@@ -93,16 +95,18 @@ class Student extends Person {
 			String tuition) {
 		super(personalNum, phoneNumber, email, name, department);
 		this.tuition = tuition;
-	    this.joinDay = personalNum.substring(0, 4) + ".3.2";
+		this.joinDay = personalNum.substring(0, 4)+".3.2";
 		stdNum++;
 	}
+	// 파일 로드시 용도
 	public Student(String personalNum, String phoneNumber, String email, String name, String department, 
-			String tuition, String joinDay) {
-		super(personalNum, phoneNumber, email, name, department);
+			String tuition, String pw) {
+		super(personalNum, phoneNumber, email, name, department,pw);
 		this.tuition = tuition;
-	    this.joinDay = joinDay;
+		this.joinDay = personalNum.substring(0, 4)+".3.2";
 		stdNum++;
 	}
+
 }
 
 class Scholarship {// 해당 학기의 등록금을 장학금이 넘지 못하도록 구현 필요
@@ -111,13 +115,7 @@ class Scholarship {// 해당 학기의 등록금을 장학금이 넘지 못하�
 	String money; // 금액 ParseInt //5.31 김현우: 등록금, 현재학기 장학금, 전체학기 장학금 + 이전학기 기록검색에 장학금이 나와야 하므로
 					// 이전학기 장학금 =>필요 => 장학금 클래스 따로 생성해야할듯 OR 파일입출력(?)
 	String semester; // 수혜학기
-    
-    public Scholarship(String ID, String name, String money, String semester){
-        this.ID=ID;
-        this.name=name;
-        this.money=money;
-        this.semester=semester;
-    }
+
 }
 
 class Professor extends Person {
@@ -126,27 +124,16 @@ class Professor extends Person {
 	String position;
 	String officeNumber;
 
-
 	// 강의과목이 없는경우//
 	public Professor(String personalNum, String phoneNumber, String officeNumber, String email, String name,
-			String department, String salary, String position, String joinDay) {
-		super(personalNum, phoneNumber, email, name, department);
-		this.salary = salary;
-		this.position = position;
-		this.joinDay = joinDay;
-		this.officeNumber = officeNumber;
-		pNum++;
-	}
-    	public Professor(String personalNum, String phoneNumber, String officeNumber, String email, String name,
-			String department, String salary, String position, String joinDay,String pw) {
+			String department, String salary, String position, String pw) {
 		super(personalNum, phoneNumber, email, name, department,pw);
 		this.salary = salary;
 		this.position = position;
-		this.joinDay = joinDay;
 		this.officeNumber = officeNumber;
 		pNum++;
 	}
-		
+
 }
 
 class Admin extends Person {
@@ -154,10 +141,9 @@ class Admin extends Person {
 	String salary;
 	String officeNumber;
 	public Admin(String personalNum, String phoneNumber, String officeNumber, String email, String name, String department, String salary,
-			String joinDay) {
-		super(personalNum, phoneNumber, email, name, department);
+			String pw) {
+		super(personalNum, phoneNumber, email, name, department,pw);
 		this.salary = salary;
-		this.joinDay = joinDay;
 		this.officeNumber = officeNumber;
 
 	}
@@ -167,11 +153,11 @@ class Admin extends Person {
 class Staff extends Admin {
 	String position;
 
-
 	public Staff(String personalNum, String phoneNumber, String officeNumber, String email, String name, String department, String salary,
-			String position, String joinDay) {
-		super(personalNum, phoneNumber,officeNumber, email, name, department, salary, joinDay);
+			String position,String joinday, String pw) {
+		super(personalNum, phoneNumber,officeNumber, email, name, department, salary, pw);
 		this.position = position;
+		this.joinDay = joinday;
 		sNum++;
 
 	}
@@ -179,10 +165,9 @@ class Staff extends Admin {
 
 class Assistant extends Admin {
 
-
 	public Assistant(String personalNum, String phoneNumber, String officeNumber, String email, String name, String department,
-			String salary, String joinDay) {
-		super(personalNum, phoneNumber,officeNumber, email, name, department, salary, joinDay);
+			String salary, String pw) {
+		super(personalNum, phoneNumber,officeNumber, email, name, department, salary, pw);
 		aNum++;
 	}
 }
@@ -206,7 +191,6 @@ class Department {
 		this.Email = Email;
 		this.Web = Web;
 	}
-	public Department() {}
 	public void print() {
 		System.out.println("학과명: " + this.department);
 		System.out.println("학과주소: " + this.address);
@@ -257,7 +241,7 @@ class OpenSubject { // 개설강의
 	String[] StuId;
 	String ProId;
 	String[] StuScore; // StuID mapping
-    String finish = "0"; // 성적 확정 판단용
+	String finish = "0";
 	public OpenSubject(String subject, String split, String season, String room, String pfsSubject, String maxStd, String schedule, String sbjNum, String ProId){
 		this.subject=subject;
 		this.split=split;
@@ -268,7 +252,5 @@ class OpenSubject { // 개설강의
 		this.schedule=schedule;
 		this.sbjNum=sbjNum;
 		this.ProId=ProId;
-		StuId = new String[Integer.parseInt(maxStd)];
-		StuScore = new String[Integer.parseInt(maxStd)];
 	}
 }
