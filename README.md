@@ -80,7 +80,7 @@ class Person implements Rank {
 }
 
 class Student extends Person {
-	//주석 내용은 다른 클래스에서 학번기반 매칭 후 값 계산으로 
+	//주석 필드는 다른 클래스에서 학번기반 매칭 후 값 계산으로 
 	// String subject;// 수강과목 여러개이므로 배열? 필요 예상
 	// char score; // 수강과목 내부에 있어야 할듯 고ㅏㅁ
 	// int credit; // 학점, 수강신청시 계산하도록? => 5.31 김현우: char배열(?)
@@ -89,7 +89,7 @@ class Student extends Person {
 	// int pastCredit; //5.31 김현우: 지난학기 성적(배열 OR 파일입출력)
 	String tuition; // 등록금
 
-	public Student(String personalNum, String phoneNumber, String email, String name, String department,
+	public Student(String personalNum, String phoneNumber, String email, String name, String department, 
 			String tuition) {
 		super(personalNum, phoneNumber, email, name, department);
 		this.tuition = tuition;
@@ -190,7 +190,7 @@ class Department {
 		this.Email = Email;
 		this.Web = Web;
 	}
-
+	public Department() {}
 	public void print() {
 		System.out.println("학과명: " + this.department);
 		System.out.println("학과주소: " + this.address);
@@ -239,7 +239,7 @@ class OpenSubject { // 개설강의
 
 	String sbjNum;
 	String[] StuId;
-	String ProId;
+	String ProID;
 	String[] StuScore; // StuID mapping
 	public OpenSubject(String subject, String split, String season, String room, String pfsSubject, String maxStd, String schedule, String sbjNum, String ProId){
 		this.subject=subject;
@@ -250,6 +250,6 @@ class OpenSubject { // 개설강의
 		this.maxStd=maxStd;
 		this.schedule=schedule;
 		this.sbjNum=sbjNum;
-		this.ProId=ProId;
+		this.ProID=ProId;
 	}
 }
