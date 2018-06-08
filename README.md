@@ -79,10 +79,6 @@ class Person implements Rank {
 		java.util.Random r1 = new java.util.Random();
 	    this.joinDay = personalNum.substring(0, 4) + "."+(r1.nextInt(12)+1)+"."+(r1.nextInt(28)+1);
 	}
-    
-    public void print() {
-		System.out.print("전화번호: " + phoneNumber + " 이메일:" + email + " 이름:" + name + " 학과:" + department);
-	}
 }
 
 class Student extends Person {
@@ -110,12 +106,6 @@ class Student extends Person {
 		this.joinDay = personalNum.substring(0, 4)+".3.2";
 		stdNum++;
 	}
-    
-    public void print() {
-		System.out.print("학번:" + ID);
-		super.print();
-		System.out.println("등록금:" + tuition + " 입학일:" + joinDay);
-	}
 
 }
 
@@ -133,35 +123,25 @@ class Scholarship {// 해당 학기의 등록금을 장학금이 넘지 못하�
         this.semester=semester;
         scoNum++;
     }
-    
-    public void print() {
-		System.out.println("학번:" + ID + " 장학금명:" + name + " 금액:" + money + " 수혜학기:" + semester);
-	}
 }
+
 class Admin extends Person {
 
 	String salary;
 	String officeNumber;
-    	public Admin(String personalNum, String phoneNumber, String officeNumber, String email, String name, String department, String salary
+	public Admin(String personalNum, String phoneNumber, String officeNumber, String email, String name, String department, String salary
 			) {
 		super(personalNum, phoneNumber, email, name, department);
 		this.salary = salary;
 		this.officeNumber = officeNumber;
 
 	}
-    
 	public Admin(String personalNum, String phoneNumber, String officeNumber, String email, String name, String department, String salary,
 			String pw) {
 		super(personalNum, phoneNumber, email, name, department,pw);
 		this.salary = salary;
 		this.officeNumber = officeNumber;
 
-	}
-    
-     public void Print() {
-		System.out.print("사번:" + ID);
-		super.print();
-		System.out.println(" 월급:" + salary + " 사무실번호:" + officeNumber);
 	}
 
 }
@@ -184,14 +164,9 @@ class Professor extends Admin {
 		this.position = position;
 		pNum++;
 	}
-    
-    public void print() {
-		super.Print();
-		System.out.println(" 직급:" + position);
-	}
+
+
 }
-
-
 
 class Staff extends Admin {
 	String position;
@@ -204,12 +179,6 @@ class Staff extends Admin {
 		sNum++;
 
 	}
-    
-    public void print() {
-		super.Print();
-		System.out.println(" 직급:" + position);
-	}
-    
 }
 
 class Assistant extends Admin {
@@ -219,12 +188,7 @@ class Assistant extends Admin {
 		super(personalNum, phoneNumber,officeNumber, email, name, department, salary, pw);
 		aNum++;
 	}
-    
-    public void print() {
-		super.Print();
-	}
 }
-
 
 class Department {
     static int dnum = 0;
@@ -263,7 +227,7 @@ class Department {
 
 class Subject {
 	/* 교과목 검색은 과목명, 학수번호, 개설학과로 검색 */
-    static int snum = 0;
+    static int sNum = 0;
 	// 학교admin 권한//
 	String subject; // 과목명
 	String sbjNum; // 학수번호
@@ -292,20 +256,18 @@ class Subject {
 class OpenSubject { // 개설강의
 	String subject; // 과목명
 	String split; // 분반
-	String season; // 개설학기(2018-1, 2016-2 ```)
+	String season; // 개설학기(18-1, 16-2 ```)
 	String room; // 강의실
 	String pfsSubject; // 강의교수
 	String maxStd; // 최대 인원 => 학과admin에서 30%이상 신청자가 없을 시 폐강되도록 한다.(open=true => false)
 	String schedule; // 시간표 => 겹치는 시간 주의
-	String CLP;
+
 	String sbjNum;
-	
 	String[] StuId;
 	String ProId;
-	String[] StuScore; // StuID mapping 0~100 점수 넣기
-    String finish = "0"; // 성적 확정 판단용 0: 진행 1: 종료 2:폐강
-	static int Onum=0;
-	public OpenSubject(String subject, String split, String season, String room, String pfsSubject, String maxStd, String schedule, String sbjNum, String ProId, String CLP){
+	String[] StuScore; // StuID mapping
+	String finish = "0";// 0이면 수강중 1이면 종강 2면 폐강
+	public OpenSubject(String subject, String split, String season, String room, String pfsSubject, String maxStd, String schedule, String sbjNum, String ProId){
 		this.subject=subject;
 		this.split=split;
 		this.season=season;
@@ -315,46 +277,5 @@ class OpenSubject { // 개설강의
 		this.schedule=schedule;
 		this.sbjNum=sbjNum;
 		this.ProId=ProId;
-		this.CLP=CLP;
-		StuId = new String[Integer.parseInt(maxStd)];
-		StuScore = new String[Integer.parseInt(maxStd)];
-		if(!(season.equals("2018-2")))//현재 학기 과목이 아닐경우
-			finish="1"; // 종강과목
-		Onum++;
 	}
-	public void print(){//수강 신청 or 수강 중 확인용
-		System.out.print("학수번호:"+sbjNum+" 과목명:"+ subject);
-		System.out.println(" 분반:"+0+split+" 강의실:"+room+" 강의 교수:"+pfsSubject+" 시간표:"+schedule);
-	}
-	
-	public void printAll(int n){//이미 이수한 과목 출력
-		System.out.print("년도:"+season.substring(0, 4)+" 학기:"+season.substring(6, 7)+" 학수번호:"+sbjNum+" 과목명:"+subject+" 학점"+CLP.substring(0, 1));
-		if((Integer.parseInt(StuScore[n]))>96)
-			System.out.println("등급:A+ 평점 평균:"+StuScore[n]);
-		else if((Integer.parseInt(StuScore[n]))>92)
-			System.out.println("등급:A0 평점 평균:"+StuScore[n]);
-		else if((Integer.parseInt(StuScore[n]))>89)
-			System.out.println("등급:A- 평점 평균:"+StuScore[n]);
-		else if((Integer.parseInt(StuScore[n]))>86)
-			System.out.println("등급:B+ 평점 평균:"+StuScore[n]);
-		else if((Integer.parseInt(StuScore[n]))>82)
-			System.out.println("등급:B0 평점 평균:"+StuScore[n]);
-		else if((Integer.parseInt(StuScore[n]))>79)
-			System.out.println("등급:B- 평점 평균:"+StuScore[n]);
-		else if((Integer.parseInt(StuScore[n]))>76)
-			System.out.println("등급:C+ 평점 평균:"+StuScore[n]);
-		else if((Integer.parseInt(StuScore[n]))>72)
-			System.out.println("등급:C0 평점 평균:"+StuScore[n]);
-		else if((Integer.parseInt(StuScore[n]))>69)
-			System.out.println("등급:C- 평점 평균:"+StuScore[n]);
-		else if((Integer.parseInt(StuScore[n]))>66)
-			System.out.println("등급:D+ 평점 평균:"+StuScore[n]);
-		else if((Integer.parseInt(StuScore[n]))>62)
-			System.out.println("등급:D0 평점 평균:"+StuScore[n]);
-		else if((Integer.parseInt(StuScore[n]))>59)
-			System.out.println("등급:D- 평점 평균:"+StuScore[n]);
-		else
-			System.out.println("등급:F 평점 평균:"+StuScore[n]);
-	}
-	
 }
